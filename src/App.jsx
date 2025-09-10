@@ -7,8 +7,10 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
 import LogInPage from "./pages/LogInPage";
 import AboutPage from "./pages/AboutPage";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/DashboardPage";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -24,6 +26,9 @@ function App() {
         <SignedIn>
           <Routes>
             <Route index element={<Dashboard />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            
           </Routes>
         </SignedIn>
       </BrowserRouter>
