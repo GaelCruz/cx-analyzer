@@ -4,7 +4,7 @@ import { NavLink } from "react-router";
 export default function Navbar() {
   return (
     <nav className="flex justify-center bg-blue-500/0 py-2">
-      <div className="w-full bg-red-500/0">
+      <div className="w-150 bg-red-500/0">
         <ul className="flex justify-evenly p-2 rounded-md bg-zinc-800 shadow-xl">
           <li className=" ">
             <NavLink

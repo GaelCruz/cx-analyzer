@@ -12,7 +12,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.46.1",
     "@radix-ui/themes": "^3.2.1",
-    "@react-three/drei": "^10.7.4",
+    "@react-three/drei": "^10.7.5",
     "@react-three/fiber": "^9.3.0",
     "@tailwindcss/vite": "^4.1.13",
     "@types/three": "^0.180.0",

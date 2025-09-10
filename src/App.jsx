@@ -22,7 +22,9 @@ function App() {
           </Routes>
         </SignedOut>
         <SignedIn>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Routes>
+            <Route index element={<Dashboard />} />
+          </Routes>
         </SignedIn>
       </BrowserRouter>
     </Theme>
