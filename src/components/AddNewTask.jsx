@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
+import { supabase } from "../data/supabaseClient";
 
 export default function AddNewTask({setAddNewTaskIsActive, addNewTaskIsActive}) {
+  const [taskTitle, setTaskTitle] = useState("")
+  const [taskDescription, setTaskDesctiption] = useState("")
+
+  
   return (
     <div className={`${addNewTaskIsActive ? 'w-full h-full bg-zinc-800/50 absolute flex justify-center' : 'hidden'}`}>
       <div className="flex flex-col justify-center">
