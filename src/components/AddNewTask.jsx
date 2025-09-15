@@ -1,11 +1,36 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import { supabase } from "../data/supabaseClient";
+import { Description } from "@radix-ui/themes/components/alert-dialog";
+
+const handleCreateTask = async (taskData) => {
+  try{
+    const {data, error} = await supabase.from("tasks").insert([taskData]).select();
+    if (error) throw error;
+    console.log('task Created Susccessfully: ', data);
+    return {data, error: null}
+  } catch (e) {
+    console.error('Error creating Task: ', e.message);
+    return {data: null, error: e.message};
+  }
+}
 
 export default function AddNewTask({setAddNewTaskIsActive, addNewTaskIsActive}) {
   const [taskTitle, setTaskTitle] = useState("")
-  const [taskDescription, setTaskDesctiption] = useState("")
+  const [taskDescription, setTaskDesctiption] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const {data: newTask, error} = await handleCreateTask({
+      task: taskTitle,
+      description: taskDescription
+    })
+
+    setTaskTitle("");
+    setTaskDesctiption("");
+    setAddNewTaskIsActive(false);
+  }
   
   return (
     <div className={`${addNewTaskIsActive ? 'w-full h-full bg-zinc-800/50 absolute flex justify-center' : 'hidden'}`}>
