@@ -1,65 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import { supabase } from "../data/supabaseClient";
 import { Description } from "@radix-ui/themes/components/alert-dialog";
 import { useTasks } from "./TasksContext";
 
-const handleCreateTask = async (taskData) => {
+const handleEditTask = async (taskId, updatedData) => {
   try {
     const { data, error } = await supabase
       .from("tasks")
-      .insert([taskData])
+      .update(updatedData)
+      .eq("id", taskId)
       .select();
     if (error) throw error;
-    console.log("task Created Susccessfully: ", data);
+    console.log("task Updated Susccessfully: ", data);
     return { data, error: null };
   } catch (e) {
-    console.error("Error creating Task: ", e.message);
+    console.error("Error updating Task: ", e.message);
     return { data: null, error: e.message };
   }
 };
 
-export default function AddNewTask({
-  setAddNewTaskIsActive,
-  addNewTaskIsActive,
-}) {
+export default function EditTask({ task, onClose }) {
+  const [taskTitle, setTaskTitle] = useState(task.task);
+  const [taskDescription, setTaskDesctiption] = useState(task.description);
   const { fetchData } = useTasks();
-  const [taskTitle, setTaskTitle] = useState("");
-  const [taskDescription, setTaskDesctiption] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data: newTask, error } = await handleCreateTask({
+    const { data: updatedData, error } = await handleEditTask(task.id, {
       task: taskTitle,
       description: taskDescription,
     });
 
-    setTaskTitle("");
-    setTaskDesctiption("");
-    setAddNewTaskIsActive(false);
-    fetchData();
+    if (!error) {
+      onClose();
+      fetchData();
+    }
   };
 
   return (
     <div
-      className={`${
-        addNewTaskIsActive
-          ? "w-full h-full bg-zinc-800/50 absolute flex justify-center"
-          : "hidden"
-      }`}
+      className={`w-full h-full bg-zinc-800/50 flex absolute z-50 top-0 left-0 justify-center`}
     >
       <div className="flex flex-col justify-center">
         <div className="bg-zinc-800 p-5 rounded-md w-100 shadow shadow-xl">
           <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
             <div className="flex justify-between items-center">
               <p className="text-xl font-bold">Create a New Item</p>
-              <p
-                className="text-xl cursor-pointer"
-                onClick={() => setAddNewTaskIsActive(false)}
-              >
+              <button className="text-xl cursor-pointer" onClick={onClose}>
                 &times;
-              </p>
+              </button>
             </div>
             <div className="flex space-y-2 flex-col ">
               <label htmlFor="">Task: </label>
@@ -74,14 +65,14 @@ export default function AddNewTask({
             <div className="flex space-y-2 flex-col ">
               <label htmlFor="">Description: </label>
               <textarea
-                onChange={(e) => setTaskDesctiption(e.target.value)}
                 value={taskDescription}
+                onChange={(e) => setTaskDesctiption(e.target.value)}
                 type="text"
                 placeholder="Go to gym from 2PM-4PM"
                 className="w-full ring rounded ring-zinc-600 p-2"
               />
             </div>
-            <Button type="submit" children={"Add"} />
+            <Button type="submit" children={"Edit"} />
           </form>
         </div>
       </div>

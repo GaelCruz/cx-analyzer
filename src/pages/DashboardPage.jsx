@@ -1,34 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Robot from "../components/Robot";
-import { supabase } from "../data/supabaseClient";
 import AppSidebar from "../components/AppSidebar";
-import DataFetcher from "../components/TasksList";
 import TasksList from "../components/TasksList";
 import AddNewTask from "../components/AddNewTask";
 import Button from "../components/Button";
-import { add } from "three/tsl";
+import { useTasks } from "../components/TasksContext";
 
 export default function DashboardPage() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+
+  const {data, loading} = useTasks()
+  
   const [addNewTaskIsActive, setAddNewTaskIsActive] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: items, error } = await supabase
-          .from("tasks")
-          .select("id, task, description, created_at");
-
-        setData(items);
-      } catch {
-        throw new Error("error fetching data from supabase");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  
   if (loading) return <p>Loading...</p>;
 
   return (

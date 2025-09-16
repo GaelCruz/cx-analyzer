@@ -11,27 +11,29 @@ import Dashboard from "./pages/DashboardPage";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import SettingsPage from "./pages/SettingsPage";
+import { TasksProvider } from "./components/TasksContext";
 
 function App() {
   return (
     <Theme appearance="dark" accentColor="purple">
-      <BrowserRouter>
-        <SignedOut>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="login" element={<LogInPage />} />
-            <Route path="about" element={<AboutPage />} />
-          </Routes>
-        </SignedOut>
-        <SignedIn>
-          <Routes>
-            <Route index element={<Dashboard />} />
-            <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            
-          </Routes>
-        </SignedIn>
-      </BrowserRouter>
+      <TasksProvider>
+        <BrowserRouter>
+          <SignedOut>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="login" element={<LogInPage />} />
+              <Route path="about" element={<AboutPage />} />
+            </Routes>
+          </SignedOut>
+          <SignedIn>
+            <Routes>
+              <Route index element={<Dashboard />} />
+              <Route path="analytics" element={<AnalyticsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Routes>
+          </SignedIn>
+        </BrowserRouter>
+      </TasksProvider>
     </Theme>
   );
 }
