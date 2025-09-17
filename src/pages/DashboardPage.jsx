@@ -4,14 +4,16 @@ import TasksList from "../components/TasksList";
 import AddNewTask from "../components/AddNewTask";
 import Button from "../components/Button";
 import { useTasks } from "../components/TasksContext";
+import { useUser } from "@clerk/clerk-react";
 
 export default function DashboardPage() {
+  const { user } = useUser();
+  const { data, loading } = useTasks();
 
-  const {data, loading} = useTasks()
-  
+  const userData = data.filter((task) => task.userId === user.id)
+
   const [addNewTaskIsActive, setAddNewTaskIsActive] = useState(false);
 
-  
   if (loading) return <p>Loading...</p>;
 
   return (

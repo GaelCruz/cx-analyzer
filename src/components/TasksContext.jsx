@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../data/supabaseClient";
+import { useUser } from "@clerk/clerk-react";
 
 const TasksContext = createContext();
 
@@ -30,7 +31,7 @@ export function TasksProvider({ children }) {
   const value = {
     data,
     loading,
-    fetchData
+    fetchData,
   };
   return (
     <TasksContext.Provider value={value}>{children}</TasksContext.Provider>
